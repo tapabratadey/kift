@@ -13,7 +13,7 @@
 NAME = easy
 CC = gcc
 LIBFT = -L libft/ -lft
-SRC = main.c
+SRC = pocket_sphinx.c
 FLAGS = -Wall -Wextra -Werror
 
 all:

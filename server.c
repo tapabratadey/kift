@@ -71,12 +71,12 @@ void	server_loop(t_server *server)
 		(struct sockaddr *)&cli_addr, &addr_len)) < 0)
 			error("Couldn't accept connection.\n");
 		printf("Connection accepted.\n\n");
-		if (fork() == 0)
-		{
-			ft_putendl("Forking for client");
+		// if (fork() == 0)
+		// {
+		// 	ft_putendl("Forking for client");
 			while (in_client)
 				get_from_client(server, cli_fd);
-		}
+		// }
 	}
 }
 

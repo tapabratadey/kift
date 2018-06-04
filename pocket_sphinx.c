@@ -6,45 +6,45 @@
 /*   By: tadey <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 02:23:48 by tadey             #+#    #+#             */
-/*   Updated: 2018/05/29 02:23:50 by tadey            ###   ########.fr       */
+/*   Updated: 2018/05/31 19:08:10 by tadey            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-**  ====================================================================
-**	Copyright (c) 1999-2010 Carnegie Mellon University.  All rights
-**	reserved.
-**
-**	Redistribution and use in source and binary forms, with or without
-**	modification, are permitted provided that the following conditions
-**	are met:
-**
-**	1.	Redistributions of source code must retain the above copyright
-**		notice, this list of conditions and the following disclaimer.
-**
-**	2.	Redistributions in binary form must reproduce the above copyright
-**		notice, this list of conditions and the following disclaimer in
-**		the documentation and/or other materials provided with the
-**		distribution.
-**
-**	This work was supported in part by funding from the Defense Advanced
-**	Research Projects Agency and the National Science Foundation of the
-**	United States of America, and the CMU Sphinx Speech Consortium.
-**
-**	THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
-**	ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-**	THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-**	PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
-**	NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-**	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-**	LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-**	DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-**	THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-**	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-**
-**	====================================================================
-*/
+ **  ====================================================================
+ **	Copyright (c) 1999-2010 Carnegie Mellon University.  All rights
+ **	reserved.
+ **
+ **	Redistribution and use in source and binary forms, with or without
+ **	modification, are permitted provided that the following conditions
+ **	are met:
+ **
+ **	1.	Redistributions of source code must retain the above copyright
+ **		notice, this list of conditions and the following disclaimer.
+ **
+ **	2.	Redistributions in binary form must reproduce the above copyright
+ **		notice, this list of conditions and the following disclaimer in
+ **		the documentation and/or other materials provided with the
+ **		distribution.
+ **
+ **	This work was supported in part by funding from the Defense Advanced
+ **	Research Projects Agency and the National Science Foundation of the
+ **	United States of America, and the CMU Sphinx Speech Consortium.
+ **
+ **	THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ **	ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ **	THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ **	PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
+ **	NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ **	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ **	LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ **	DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ **	THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ **	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ **	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ **
+ **	====================================================================
+ */
 
 #include "kift.h"
 
@@ -55,11 +55,11 @@ void	error(char *str)
 }
 
 /*
-		***CLEAN_UP***
-	1)	close the file
-	2)	ps_free cleans up the decoder struct
-	3)	cmd_ln_free_r cleans up the config struct
-*/
+ ***CLEAN_UP***
+ 1)	close the file
+ 2)	ps_free cleans up the decoder struct
+ 3)	cmd_ln_free_r cleans up the config struct
+ */
 
 void	clean_up()
 {
@@ -68,13 +68,13 @@ void	clean_up()
 }
 
 /*
-		***DECODER***
-	1)	live audio input is platform based, hence just
-			worrying abt decoding audio files.
-	2)	the main pocketsphinx use case is to read audio data
-			in blocks of memory from a source and feed it to
-				the decoder
-*/
+ ***DECODER***
+ 1)	live audio input is platform based, hence just
+ worrying abt decoding audio files.
+ 2)	the main pocketsphinx use case is to read audio data
+ in blocks of memory from a source and feed it to
+ the decoder
+ */
 
 int	init_decoder()
 {
@@ -87,24 +87,24 @@ int	init_decoder()
 }
 
 /*
-		***CREATE CONFIGURATION***
-	1)	create a config object
-	2)	takes a var number of null-terminated string args
-	3)	second arg is array of arg definition.
-	4)	standard set can be obtained by calling ps_args()
-	5)	third arg is TRUE which means that duplicate args or
-			unknown args will cause the parsing process to fail
-	6)	MODELDIR macros is defined on the gcc command-line by
-			using the pkg-config to obtain the modeldir var
-				from PocketSphinx configuration.
-*/
+ ***CREATE CONFIGURATION***
+ 1)	create a config object
+ 2)	takes a var number of null-terminated string args
+ 3)	second arg is array of arg definition.
+ 4)	standard set can be obtained by calling ps_args()
+ 5)	third arg is TRUE which means that duplicate args or
+ unknown args will cause the parsing process to fail
+ 6)	MODELDIR macros is defined on the gcc command-line by
+ using the pkg-config to obtain the modeldir var
+ from PocketSphinx configuration.
+ */
 
 int	create_config()
 {
 	if ((g_config = cmd_ln_init(NULL, ps_args(), TRUE,
-	"-hmm", MODELDIR "/en-us/en-us",
-	"-lm", MODELDIR "/en-us/en-us.lm.bin",
-	"-dict", MODELDIR "/en-us/cmudict-en-us.dict", NULL)) == NULL)
+					"-hmm", MODELDIR "/en-us/en-us",
+					"-lm", "./model/acoustic_model.lm",
+					"-dict", "./model/acoustic_model.dict", NULL)) == NULL)
 		return (1);
 	return (0);
 }
@@ -116,11 +116,11 @@ static void	print_word_times(t_config *config_struct)
 	while (config_struct->iter != NULL)
 	{
 		ps_seg_frames(config_struct->iter, &config_struct->sf,
-		&config_struct->ef);
+				&config_struct->ef);
 		config_struct->pprob = ps_seg_prob(config_struct->iter, NULL,
-		NULL, NULL);
+				NULL, NULL);
 		config_struct->conf = logmath_exp(ps_get_logmath(g_ps),
-		config_struct->pprob);
+				config_struct->pprob);
 		printf("%s %.3f %.3f %f\n", ps_seg_word(config_struct->iter),
 				((float)config_struct->sf / config_struct->frame_rate),
 				((float)config_struct->ef / config_struct->frame_rate),
@@ -144,7 +144,7 @@ static void	recognize_get_speech(t_server *server, t_config *config_struct)
 			printf("%s\n", config_struct->hyp);
 			server->size_of_reply = strlen(config_struct->hyp);
 			strncpy(server->reply, config_struct->hyp,
-			server->size_of_reply);
+					server->size_of_reply);
 		}
 		if (config_struct->print_times)
 			print_word_times(config_struct);
@@ -158,7 +158,7 @@ static void	recognize_start_decoding(t_server *server, t_config *config_struct)
 {
 	config_struct->utt_started = FALSE;
 	while ((config_struct->k = fread(config_struct->adbuf, sizeof(int16),
-		2048, g_rawfd)) > 0)
+					2048, g_rawfd)) > 0)
 		recognize_get_speech(server, config_struct);
 }
 
@@ -195,8 +195,8 @@ static void	recognize_file_parse(const char *fname)
 	{
 		fread(waveheader, 1, 44, g_rawfd);
 		if (!check_wav_header(waveheader,
-			(int)cmd_ln_float32_r(g_config, "-samprate")))
-				E_FATAL("Failed to process file '%s' due to format mismatch.\n", fname);
+					(int)cmd_ln_float32_r(g_config, "-samprate")))
+			E_FATAL("Failed to process file '%s' due to format mismatch.\n", fname);
 	}
 	if (strlen(fname) > 4 && strcmp(fname + strlen(fname) - 4, ".mp3") == 0)
 		E_FATAL("Can not decode mp3 files, convert input file to WAV 16kHz 16-bit mono before decoding.\n");
@@ -227,7 +227,7 @@ static void	recognize_from_file(const char *fname, t_server *server)
 	fclose(g_rawfd);
 }
 
-int	main()
+int	main(int argc, char **argv)
 {
 	t_server *server;
 
@@ -236,7 +236,11 @@ int	main()
 		error("Failed to create config objects.\n");
 	if (init_decoder() == 1)
 		error("Failed to initialize the decoder.\n");
-	recognize_from_file("goforward.raw", server);
+	if(argc == 2)
+	{
+		recognize_from_file(argv[1], server);
+		printf("server->reply: %s\n", server->reply);
+	}
 	clean_up();
 	return (0);
 }

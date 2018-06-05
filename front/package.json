@@ -1,0 +1,17 @@
+{
+  "name": "electrons_tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Terence",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^2.0.2"
+  },
+  "devDependencies": {
+    "electron-packager": "^12.1.0"
+  }
+}
